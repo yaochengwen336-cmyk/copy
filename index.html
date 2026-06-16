@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>剪映批量复制脚本</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+      color: #e8eef7;
+      background: linear-gradient(135deg, #101728, #18223a 55%, #0e4b5a);
+      padding: 42px 18px;
+    }
+    main {
+      width: min(900px, 100%);
+      margin: 0 auto;
+      background: rgba(12, 18, 32, .78);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 18px;
+      padding: 34px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .32);
+    }
+    h1 { margin: 0 0 10px; font-size: 32px; }
+    p { color: #b9c7d8; line-height: 1.8; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+    a {
+      color: #fff;
+      text-decoration: none;
+      background: #1f8cff;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    a.secondary { background: rgba(255, 255, 255, .12); }
+    section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, .1);
+    }
+    ol, ul { color: #c9d5e4; line-height: 1.9; }
+    code, pre {
+      font-family: Consolas, "Courier New", monospace;
+    }
+    code {
+      background: rgba(255, 255, 255, .1);
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+    pre {
+      overflow: auto;
+      max-height: 420px;
+      padding: 18px;
+      border-radius: 12px;
+      background: #08101f;
+      color: #dce9ff;
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>剪映批量复制脚本</h1>
+    <p>这是一个用于剪映时间线的 PyAutoGUI 自动化脚本，会把已选中的视频片段复制并粘贴 143 次。</p>
+    <div class="actions">
+      <a href="./copy_jianying.py" download>下载 Python 脚本</a>
+      <a class="secondary" href="./copy_jianying.py">在线查看源码</a>
+    </div>
+
+    <section>
+      <h2>运行前准备</h2>
+      <ol>
+        <li>安装 Python，并执行：<code>pip install pyautogui</code></li>
+        <li>打开剪映，把视频片段放在主轨上。</li>
+        <li>用鼠标单击选中该片段，让它出现白色边框。</li>
+        <li>运行脚本后，5 秒内切回剪映窗口。</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>注意</h2>
+      <ul>
+        <li>脚本会模拟键盘操作，请运行前确认剪映窗口处于正确状态。</li>
+        <li>紧急停止：把鼠标移动到屏幕左上角，PyAutoGUI 会触发安全停止。</li>
+        <li>GitHub Pages 只能展示网页，不能直接在浏览器里运行这个 Python 脚本。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>源码预览</h2>
+      <pre><code>import time
+import pyautogui
+
+pyautogui.FAILSAFE = True
+pyautogui.PAUSE = 0.1
+
+COPY_COUNT = 143
+
+def main():
+    print("=" * 50)
+    print("剪映批量复制143次")
+    print("=" * 50)
+    print("脚本将在 5 秒后开始，请立即切换到剪映窗口。")
+
+    for s in range(5, 0, -1):
+        print(f"  {s}...")
+        time.sleep(1)
+
+    pyautogui.hotkey("ctrl", "c")
+    time.sleep(0.5)
+
+    for i in range(1, COPY_COUNT + 1):
+        pyautogui.press("end")
+        time.sleep(0.3)
+        pyautogui.hotkey("ctrl", "v")
+        time.sleep(0.3)
+
+        if i % 10 == 0:
+            print(f"已完成 {i}/{COPY_COUNT}")
+
+    print(f"完成，共复制粘贴 {COPY_COUNT} 次。")
+
+if __name__ == "__main__":
+    main()</code></pre>
+  </main>
+</body>
+</html>
